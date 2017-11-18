@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Stack;
+
 public class StringQuestions {
     public int myAtoi(String str) {
         if (null == str) return 0;
@@ -45,8 +48,27 @@ public class StringQuestions {
         }
     }
 
+    public boolean isParenthesesValid(String s) {
+        HashMap<Character, Character> map = new HashMap<>();
+        map.put(')', '(');
+        map.put(']', '[');
+        map.put('}', '{');
+
+        Stack<Character> st = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (!map.containsKey(ch))
+                st.push(ch);
+            else {
+                if (st.size() == 0 || map.get(ch) != st.peek()) return false;
+                st.pop();
+             }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         StringQuestions strq = new StringQuestions();
-        System.out.println(strq.longestCommonPrefix(  new String[]{"a", "b"} ));
+        System.out.println(strq.isParenthesesValid( "([)]"));
     }
 }

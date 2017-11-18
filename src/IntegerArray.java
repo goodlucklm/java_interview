@@ -1,7 +1,10 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class IntegerArray {
     public int findDuplicateLoop(int[] nums) {
         for (int i = 0; i < nums.length; i++) {
-            for (int j = 0; j < nums.length; j++) {
+            for (int j = i; j < nums.length; j++) {
                 if (nums[i] == nums[j]) return nums[i];
             }
         }
@@ -25,8 +28,21 @@ public class IntegerArray {
         return fast;
     }
 
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        ArrayList<Integer> results = new ArrayList<>();
+        for (int n : nums) {
+            if (nums[Math.abs(n)-1] > 0) nums[Math.abs(n)-1] *= -1;
+        }
+        int count = 0;
+        for (int n : nums) {
+            if (n > 0) results.add(count+1);
+            count++;
+        }
+        return results;
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.findDuplicateFastSlow(new int[]{1,3,4,2,2}));
+        System.out.println(ia.findDisappearedNumbers(new int[]{4,3,2,7,8,2,3,1}));
     }
 }

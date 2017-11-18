@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 public class StringQuestions {
@@ -67,8 +69,28 @@ public class StringQuestions {
         return true;
     }
 
+    private void parenthesisGenerator(int upperBound, int currentDegree, String current, List<String> results) {
+        if (currentDegree == 0) { // only choice is put (
+            if (upperBound == 0)  // done!!
+                results.add(current);
+            else
+                parenthesisGenerator(upperBound, currentDegree+1, current + '(', results);
+        } else if (currentDegree == upperBound) { // only choice is put )
+            parenthesisGenerator(upperBound-1, currentDegree-1, current + ')', results);
+        } else {
+            parenthesisGenerator(upperBound, currentDegree+1, current+'(', results);
+            parenthesisGenerator(upperBound-1, currentDegree-1, current+')', results);
+        }
+    }
+
+    public List<String> generateParenthesis(int n) {
+        List<String> results = new ArrayList<>();
+        parenthesisGenerator(n, 0, "", results);
+        return results;
+    }
+
     public static void main(String[] args) {
         StringQuestions strq = new StringQuestions();
-        System.out.println(strq.isParenthesesValid( "([)]"));
+        System.out.println(strq.generateParenthesis( 3));
     }
 }

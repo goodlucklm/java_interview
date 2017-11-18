@@ -38,11 +38,34 @@ public class LinkedLists {
 
     }
 
+    public ListNode mergeTwoSortedLists(ListNode l1, ListNode l2) {
+        ListNode result = new ListNode(0);
+        ListNode p = result;
+        while (null != l1 && null != l2) {
+            if (l1.val < l2.val) {
+                p.next = l1;
+                l1 = l1.next;
+            } else {
+                p.next = l2;
+                l2 = l2.next;
+            }
+            p = p.next;
+        }
+        if (l1 != null)
+            p.next = l1;
+        else
+            p.next = l2;
+        return result.next;
+    }
+
     public static void main(String[] args) {
         LinkedLists ll = new LinkedLists();
         ListNode head = new ListNode(0);
         ListNode p = new ListNode(1);
         head.next = p;
-        System.out.println(ll.hasCycle(head));
+        ListNode head2 = new ListNode(8);
+        p = new ListNode(9);
+        head2.next = p;
+        System.out.println(ll.mergeTwoSortedLists(head, head2));
     }
 }

@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class NIntegerSumSorted {
     private void findNSum(int[] inputs, int degree, int target, int curr, List<Integer> path, List<List<Integer>> results) {
@@ -21,12 +18,12 @@ public class NIntegerSumSorted {
 
         // target not reachable
         int len = inputs.length;
-        int max = inputs[len-1], min = inputs[0];
-        if (max*degree < target) return;
-        if (min*degree > target) return;
+        int max = inputs[len - 1], min = inputs[0];
+        if (max * degree < target) return;
+        if (min * degree > target) return;
 
         if (degree > 2) {
-            for (int i = curr; i < inputs.length - (degree-1); i++) {
+            for (int i = curr; i < inputs.length - (degree - 1); i++) {
                 int current = inputs[i];
                 if (i > 0 && current == inputs[i - 1]) continue; // duplicated item as the one before
                 if ((current + (degree - 1) * max) < target) continue; // current too small
@@ -34,11 +31,11 @@ public class NIntegerSumSorted {
                 if (null == path)
                     path = new ArrayList<>();
                 path.add(current);
-                findNSum(inputs, degree - 1, target - current, i+1, path, results);
-                path.remove(path.size()-1);
+                findNSum(inputs, degree - 1, target - current, i + 1, path, results);
+                path.remove(path.size() - 1);
             }
         } else { // degree == 2, twoSum
-            int left = curr, right = len-1;
+            int left = curr, right = len - 1;
             while (left < right) { // this condition covers right == curr
                 int left_value = inputs[left];
                 int right_value = inputs[right];
@@ -80,8 +77,34 @@ public class NIntegerSumSorted {
         return results;
     }
 
+    public int threeSumClosest(int[] nums, int target) {
+        int result = 0, distance = Integer.MAX_VALUE, tmp, n;
+        // calculate all possible pair sums, store in a map
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i; j < nums.length; j++) {
+                map.put(nums[i] + nums[j], 1);
+            }
+        }
+
+        // go through each number and find closer pair sum
+        for (int i = 0; i < nums.length; i++) {
+            tmp = target - nums[i];
+            if (map.containsKey(tmp)) return target;
+            n = 1;
+            while (!map.containsKey(tmp - n) || !map.containsKey(tmp + n)) {
+                n += 1;
+                if (n >= distance) break;
+            }
+            distance = n;
+            if (map.containsKey(tmp + n)) result = nums[i] + map.get(tmp + n);
+            else result = nums[i] + map.get(tmp - n);
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         NIntegerSumSorted niss = new NIntegerSumSorted();
-        niss.threeSum(new int[]{-2,0,0,2,2});
+        System.out.println("the result is " + niss.threeSumClosest(new int[]{-1, 2, 1, -4}, 1));
     }
 }

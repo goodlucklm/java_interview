@@ -26,8 +26,27 @@ public class StringQuestions {
         return (int)base;
     }
 
+    public String longestCommonPrefix(String[] strs) {
+        int i = 0;
+        char ch;
+        String prefix = "";
+        while (true) {
+            if (strs.length > 0 && strs[0].length() > i)
+                ch = strs[0].charAt(i);
+            else
+                return prefix;
+            for (int j = 0; j < strs.length; j++) {
+                if (strs[j].length() <= i || strs[j].charAt(i) != ch ) {
+                    return prefix;
+                }
+            }
+            prefix += ch;
+            i++;
+        }
+    }
+
     public static void main(String[] args) {
         StringQuestions strq = new StringQuestions();
-        System.out.println(strq.myAtoi(  "-010"));
+        System.out.println(strq.longestCommonPrefix(  new String[]{"a", "b"} ));
     }
 }

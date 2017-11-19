@@ -79,56 +79,21 @@ public class NIntegerSumSorted {
         return results;
     }
 
-    private boolean sumHasMe(int me, List<Integer> L) {
-        for (int j = 1; j < L.size(); j+=2) {
-            int i = j - 1;
-            if (L.get(i) != me && L.get(j) != me)
-                return false;
-        }
-        return true;
-    }
-
     public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
         int result = nums[0]+nums[1]+nums[2];
-        int distance = Math.abs(target-result), tmp, n;
-        List<Integer> L;
-        // calculate all possible pair sums, store in a map
-        HashMap<Integer, List<Integer>> map = new HashMap<>();
-        for (int i = 0; i < nums.length-1; i++) {
-            for (int j = i+1; j < nums.length; j++) {
-                int sum = nums[i]+nums[j];
-                if (!map.containsKey(sum)) {
-                    L = new ArrayList<>();
-                    L.add(i);
-                    L.add(j);
-                    map.put(sum, L);
-                } else {
-                    L = map.get(sum);
-                    L.add(i);
-                    L.add(j);
-                }
-            }
-        }
-
-        // go through each number and find closer pair sum
         for (int i = 0; i < nums.length; i++) {
-            tmp = target - nums[i];
-            if (map.containsKey(tmp) && !sumHasMe(i, map.get(tmp))) return target;
-            n = 1;
-            int lo = tmp - n, hi = tmp + n;
-            while (((!map.containsKey(lo)) || (map.containsKey(lo) && sumHasMe(i,map.get(lo))))
-                && ((!map.containsKey(hi)) || (map.containsKey(hi) && sumHasMe(i,map.get(hi))))) {
-                n += 1;
-                lo = tmp - n;
-                hi = tmp + n;
-                if (n >= distance) break;
-            }
-            if (n < distance) {
-                distance = n;
-                if (map.containsKey(hi))
-                    result = nums[i] + hi;
-                else if (map.containsKey(lo))
-                    result = nums[i] + lo;
+            int left = i+1, right = nums.length-1;
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum > target)
+                    right--;
+                else if (sum < target)
+                    left++;
+                else
+                    return target;
+                if (Math.abs(target-sum) < Math.abs(target-result))
+                    result = sum;
             }
         }
         return result;

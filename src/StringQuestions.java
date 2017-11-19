@@ -66,7 +66,7 @@ public class StringQuestions {
                 st.pop();
              }
         }
-        return true;
+        return (st.size() == 0);
     }
 
     private void parenthesisGenerator(int upperBound, int currentDegree, String current, List<String> results) {

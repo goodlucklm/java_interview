@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class LinkedLists {
     public boolean hasCycle(ListNode head) {
         ListNode fast, slow;
@@ -58,14 +60,47 @@ public class LinkedLists {
         return result.next;
     }
 
+    private void insertToPool(ListNode n, ListNode[] pool) {
+        for (int i = 0; i < pool.length; i++) {
+            if (pool[i] == null) {
+                pool[i] = n;
+                break;
+            } else if (n.val >= pool[i].val) {
+                for (int j = pool.length-1; j > i; j--) {
+                    pool[j] = pool[j-1];
+                }
+                pool[i] = n;
+                break;
+            }
+        }
+    }
+
+    public ListNode mergeKSortedLists(ListNode[] lists) {
+        int k = lists.length, len = lists.length, high = len/2;
+        if (k == 0) return null;
+        if (k == 1) return lists[0];
+
+        while (high > 0) {
+            for (int i = 0; i < high; i++) {
+                lists[i] = mergeTwoSortedLists(lists[i], lists[len-1-i]);
+                lists[len-1-i] = null;
+            }
+            len -= high;
+            high = len/2;
+        }
+        return lists[0];
+    }
+
     public static void main(String[] args) {
         LinkedLists ll = new LinkedLists();
-        ListNode head = new ListNode(0);
-        ListNode p = new ListNode(1);
-        head.next = p;
-        ListNode head2 = new ListNode(8);
-        p = new ListNode(9);
-        head2.next = p;
-        System.out.println(ll.mergeTwoSortedLists(head, head2));
+        ListNode one = new ListNode(1);
+        one.next = new ListNode(2);
+        one.next.next = new ListNode(3);
+        ListNode two = new ListNode(4);
+        two.next = new ListNode(5);
+        two.next.next = new ListNode(6);
+        two.next.next.next = new ListNode(7);
+        ListNode[] dog = new ListNode[]{one, two};
+        System.out.println(ll.mergeKSortedLists(dog));
     }
 }

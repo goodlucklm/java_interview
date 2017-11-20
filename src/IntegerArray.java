@@ -41,8 +41,21 @@ public class IntegerArray {
         return results;
     }
 
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length;
+        for (int i = n-1; i > 0; i--) {
+            if (nums[i] == nums[i-1]) {
+                for (int j = i-1; j < n-1; j++) {
+                    nums[j] = nums[j+1];
+                }
+                n--;
+            }
+        }
+        return n;
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.findDisappearedNumbers(new int[]{4,3,2,7,8,2,3,1}));
+        System.out.println(ia.removeDuplicates(new int[]{1,1,2}));
     }
 }

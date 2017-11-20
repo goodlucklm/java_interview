@@ -42,16 +42,13 @@ public class IntegerArray {
     }
 
     public int removeDuplicates(int[] nums) {
-        int n = nums.length;
-        for (int i = n-1; i > 0; i--) {
-            if (nums[i] == nums[i-1]) {
-                for (int j = i-1; j < n-1; j++) {
-                    nums[j] = nums[j+1];
-                }
-                n--;
+        int n = nums.length, count = 1;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] != nums[i-1]) {
+                nums[count++] = nums[i];
             }
         }
-        return n;
+        return count;
     }
 
     public static void main(String[] args) {

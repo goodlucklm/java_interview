@@ -51,8 +51,30 @@ public class IntegerArray {
         return count;
     }
 
+    public int removeElement(int[] nums, int val) {
+        int n = nums.length, count = 0, i = n, p;
+        while (i > 0) {
+            p = i-1-count;
+            while (p >= 0 && nums[p] == val) {
+                count++;
+                p = i-1-count;
+            }
+            if (count > 0) {
+                for (int j = i-count; j < n-count; j++) {
+                    nums[j] = nums[j+count];
+                }
+                n -= count;
+                i -= count;
+                count = 0;
+
+            }
+            i--;
+        }
+        return n;
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.removeDuplicates(new int[]{1,1,2}));
+        System.out.println(ia.removeElement(new int[]{3,3}, 3));
     }
 }

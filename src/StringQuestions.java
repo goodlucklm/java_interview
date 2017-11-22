@@ -89,6 +89,31 @@ public class StringQuestions {
         return results;
     }
 
+    public int strStr(String haystack, String needle) {
+        if (null == haystack || null == needle)
+            return -1;
+        int m = haystack.length(), n = needle.length();
+        if (n == 0)
+            return 0;
+
+        for (int i = 0; i <= m-n; i++) {
+            if (haystack.charAt(i) == needle.charAt(0)) {
+                boolean match = true;
+                for (int j = 1; j < n; j++) {
+                    if (haystack.charAt(i+j) != needle.charAt(j)) {
+                        match = false;
+                        break;
+                    }
+                }
+                if (match)
+                    return i;
+            }
+        }
+
+        return -1;
+
+    }
+
     public static void main(String[] args) {
         StringQuestions strq = new StringQuestions();
         System.out.println(strq.generateParenthesis( 3));

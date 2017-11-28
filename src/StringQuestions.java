@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class StringQuestions {
     public int myAtoi(String str) {
@@ -114,8 +111,56 @@ public class StringQuestions {
 
     }
 
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> results = new ArrayList<>();
+
+        int ls = s.length(), lwc = words.length;
+        if (ls == 0 || lwc == 0) return results;
+
+        int lw = words[0].length();
+        Map<String, Integer> wordCombination = new HashMap<>();
+        for (String word : words)
+            wordCombination.put(word, wordCombination.getOrDefault(word, 0)+1);
+        Map<String, Integer> seen = new HashMap<>();
+        int j, start, count;
+
+        for (int i = 0; i < lw; i++) {
+            seen.clear();
+            start = i;
+            count = 0;
+            for (j = i; j < ls-lw+1; j+=lw) {
+                String word = s.substring(j, j+lw);
+                if (wordCombination.containsKey(word)) {
+                    seen.put(word, seen.getOrDefault(word, 0) + 1);
+                    count++;
+                    while (seen.get(word) > wordCombination.get(word)) {
+                        String left = s.substring(start, start+lw);
+                        seen.put(left, seen.get(left)-1);
+                        start += lw;
+                        count--;
+                    }
+                    if (count == lwc) {
+                        results.add(start);
+                        String left = s.substring(start, start+lw);
+                        seen.put(left, seen.get(left)-1);
+                        start += lw;
+                        count--;
+                    }
+                } else {
+                    seen.clear();
+                    start = j+lw;
+                    count = 0;
+                }
+            }
+        }
+        return results;
+    }
+
+
     public static void main(String[] args) {
         StringQuestions strq = new StringQuestions();
-        System.out.println(strq.generateParenthesis( 3));
+        String s = "barfoothefoobarman";
+        String[] words = new String[]{"foo","bar"};
+        System.out.println(strq.findSubstring(s, words));
     }
 }

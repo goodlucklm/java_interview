@@ -239,11 +239,38 @@ public class StringQuestions {
         return result;
     }
 
+    public int longestValidParentheses(String s) {
+        // check if s is null
+        if (null == s)
+            return 0;
+        int maxLength = 0, n = s.length(), currLength, dgree = 0, i = 0;
+        int[] dgree_recorder = new int[n+1];
+        dgree_recorder[0] = -1;
+
+        while (i < n) {
+            char ch = s.charAt(i);
+            if (ch == '(') {
+                dgree++;
+                dgree_recorder[dgree] = i;
+            } else if (dgree > 0) {
+                dgree--;
+                currLength = i - dgree_recorder[dgree];
+                maxLength = Math.max(currLength, maxLength);
+            } else {
+                dgree_recorder[0] = i;
+                dgree = 0;
+            }
+            i++;
+        }
+        return maxLength;
+    }
 
     public static void main(String[] args) {
         StringQuestions strq = new StringQuestions();
         String s = "barfoothefoobarman";
         String[] words = new String[]{"foo","bar"};
-        System.out.println(strq.findSubstring(s, words));
+        System.out.println(strq.longestValidParentheses("(()"));
+        System.out.println(strq.longestValidParentheses("()()())"));
+        System.out.println(strq.longestValidParentheses("()(())"));
     }
 }

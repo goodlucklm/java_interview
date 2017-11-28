@@ -41,6 +41,19 @@ public class IntegerQuestions {
         }
     }
 
+    public boolean isPalindrome(int x) {
+        int y = x;
+        long result = 0;
+        while (x != 0) {
+            result = result * 10 + x % 10;
+            if (Math.abs(result) > Integer.MAX_VALUE)
+                return false;
+            x /= 10;
+        }
+        return result == y;
+
+    }
+
     public static void main(String[] args) {
         IntegerQuestions iq = new IntegerQuestions();
         System.out.println(iq.divide(1100540749,      -1090366779));

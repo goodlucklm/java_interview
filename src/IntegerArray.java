@@ -258,8 +258,30 @@ public class IntegerArray {
         return res;
     }
 
+    public int searchInsert(int[] nums, int target) {
+        int n = nums.length, lo = 0, hi = n-1, mid = (lo+hi)/2;
+        if (n == 0)
+            return 0;
+        while (lo <= hi) {
+            mid = (lo+hi)/2;
+            if (nums[mid] == target)
+                return mid;
+            else if (nums[mid] < target)
+                lo = mid+1;
+            else
+                hi = mid-1;
+        }
+        if (nums[mid] > target)
+            return mid;
+        else
+            return mid+1;
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.searchRange(new int[]{5,7,7,8,8,10 }, 7));
+        System.out.println(ia.searchInsert(new int[]{1,3,5,6}, 5));
+        System.out.println(ia.searchInsert(new int[]{1,3}, 2));
+        System.out.println(ia.searchInsert(new int[]{1,3,5,6}, 7));
+        System.out.println(ia.searchInsert(new int[]{1,3,5,6}, 0));
     }
 }

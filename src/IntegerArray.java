@@ -186,8 +186,42 @@ public class IntegerArray {
 
     }
 
+    public int searchInRotatedSortedArray(int[] nums, int target) {
+        int startPosition, n = nums.length, result=-1;
+        boolean rotated = false;
+        if (n == 0)
+            return result;
+        for (startPosition = 0; startPosition < n-1; startPosition++) {
+            if (nums[startPosition] > nums[startPosition+1]) {
+                startPosition += 1;
+                rotated = true;
+                break;
+            }
+        }
+
+        int left = startPosition, right = n-1+startPosition, mid;
+        if (!rotated) {
+            left = 0;
+            right = n - 1;
+        }
+        while (left < right) {
+            mid = (left+right)/2;
+            if (nums[mid%n] < target) {
+                left = mid+1;
+            } else if (nums[mid%n] > target) {
+                right = mid-1;
+            } else {
+                result = mid%n;
+                break;
+            }
+        }
+        if (left == right && target == nums[left%n])
+            result = left%n;
+        return result;
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.removeElement(new int[]{3,3}, 3));
+        System.out.println(ia.searchInRotatedSortedArray(new int[]{3, 1}, 2));
     }
 }

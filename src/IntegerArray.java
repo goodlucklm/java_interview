@@ -220,8 +220,46 @@ public class IntegerArray {
         return result;
     }
 
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1,-1};
+        int n = nums.length;
+        if (n == 0)
+            return res;
+        int lo = 0, hi = n-1, mid = (lo+hi)/2;
+        while (lo < hi) {
+            mid = (lo+hi)/2;
+            if (nums[mid] == target)
+                break;
+            else if (nums[mid] > target) {
+                hi = mid-1;
+            } else {
+                lo = mid+1;
+            }
+        }
+
+        int targetIndex, start, end;
+        if (nums[mid] == target) {
+            targetIndex = mid;
+        } else if (nums[lo] == target) {
+            targetIndex = lo;
+        } else {
+            return res;
+        }
+        start = targetIndex;
+        while (start >= 0 && nums[start] == target) {
+            res[0] = start;
+            start--;
+        }
+        end = targetIndex;
+        while (end < n && nums[end] == target) {
+            res[1] = end;
+            end++;
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.searchInRotatedSortedArray(new int[]{3, 1}, 2));
+        System.out.println(ia.searchRange(new int[]{5,7,7,8,8,10 }, 7));
     }
 }

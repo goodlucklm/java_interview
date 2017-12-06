@@ -265,12 +265,35 @@ public class StringQuestions {
         return maxLength;
     }
 
+    public String countAndSay(int n) {
+        List<Integer> ints = new ArrayList<>();
+        List<Integer> turn;
+        ints.add(1);
+        int count = 0, i, size, current;
+        while (n > 1) {
+            size = ints.size();
+            i = 0;
+            turn = new ArrayList<>();
+            while (i < size) {
+                current = ints.get(i);
+                count = 0;
+                while (count + i < size && ints.get(count + i) == current)
+                    count++;
+                turn.add(count);
+                turn.add(current);
+                i += count;
+            }
+            ints = turn;
+            n--;
+        }
+        String res = "";
+        for (int j : ints)
+            res += j;
+        return res;
+    }
+
     public static void main(String[] args) {
         StringQuestions strq = new StringQuestions();
-        String s = "barfoothefoobarman";
-        String[] words = new String[]{"foo","bar"};
-        System.out.println(strq.longestValidParentheses("(()"));
-        System.out.println(strq.longestValidParentheses("()()())"));
-        System.out.println(strq.longestValidParentheses("()(())"));
+        System.out.println("Hey, you got this: "+strq.countAndSay(6));
     }
 }

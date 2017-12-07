@@ -316,28 +316,20 @@ public class IntegerArray {
     }
 
     public int firstMissingPositive(int[] nums) {
-        int n = nums.length;
-        // change 0s to -1s
-        for (int i = 0; i < n; i++) {
-            if (nums[i] == 0)
-                nums[i] = -1;
-        }
-        // set values
-        int c, tmp;
+        int n = nums.length, tmp, c;
         for (int i = 0; i < n; i++) {
             c = nums[i];
-            while (c <= n && c > 0) {
+            while (c > 0 && c <= n && c != nums[c-1]) {
                 tmp = nums[c-1];
-                nums[c-1] = 0;
-                c = tmp;
+                nums[c-1] = c;
+                nums[i] = tmp;
+                c = nums[i];
             }
-            if (nums[i] != 0)
-                nums[i] = -1;
         }
         // search result
         int i;
         for (i = 0; i < n; i++) {
-            if (nums[i] != 0)
+            if (nums[i] != i+1)
                 break;
         }
         return i+1;
@@ -345,6 +337,6 @@ public class IntegerArray {
 
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.firstMissingPositive(new int[]{1,1}));
+        System.out.println(ia.firstMissingPositive(new int[]{3,4,-1,1}));
     }
 }

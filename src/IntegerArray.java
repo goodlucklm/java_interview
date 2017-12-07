@@ -282,12 +282,14 @@ public class IntegerArray {
         return res;
     }
 
-    private void findAllCombinations(int[] candidates, int target, List<List<Integer>> res, List<Integer> currentPath, int start) {
-        for (int i = start; i < candidates.length && candidates[i] <= target; i++) {
+    private void findAllCombinations(int[] candidates, int target, List<List<Integer>> res, List<Integer> currentPath, int start, int shift) {
+        for (int i = start+shift; i < candidates.length && candidates[i] <= target; i++) {
             int c = candidates[i];
+            if (i > start+shift && c == candidates[i-1])
+                continue;
             if (c < target) {
                 currentPath.add(c);
-                findAllCombinations(candidates, target-c, res, currentPath, i);
+                findAllCombinations(candidates, target-c, res, currentPath, i, 1);
                 currentPath.remove(new Integer(c));
             } else if (c == target) {
                 currentPath.add(c);
@@ -301,12 +303,20 @@ public class IntegerArray {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> path = new ArrayList<>();
         Arrays.sort(candidates);
-        findAllCombinations(candidates, target, res, path, 0);
+        findAllCombinations(candidates, target, res, path, 0, 0);
+        return res;
+    }
+
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        Arrays.sort(candidates);
+        findAllCombinations(candidates, target, res, path, 0, 0);
         return res;
     }
 
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.combinationSum(new int[]{2,3,6,7}, 7));
+        System.out.println(ia.combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8));
     }
 }

@@ -315,8 +315,36 @@ public class IntegerArray {
         return res;
     }
 
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+        // change 0s to -1s
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == 0)
+                nums[i] = -1;
+        }
+        // set values
+        int c, tmp;
+        for (int i = 0; i < n; i++) {
+            c = nums[i];
+            while (c <= n && c > 0) {
+                tmp = nums[c-1];
+                nums[c-1] = 0;
+                c = tmp;
+            }
+            if (nums[i] != 0)
+                nums[i] = -1;
+        }
+        // search result
+        int i;
+        for (i = 0; i < n; i++) {
+            if (nums[i] != 0)
+                break;
+        }
+        return i+1;
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8));
+        System.out.println(ia.firstMissingPositive(new int[]{1,1}));
     }
 }

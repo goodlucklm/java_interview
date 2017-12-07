@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class IntegerArray {
     public int findDuplicateLoop(int[] nums) {
@@ -277,11 +275,38 @@ public class IntegerArray {
             return mid+1;
     }
 
+    private List<Integer> getOne(Map<Integer, Integer> map, int target) {
+        List<Integer> res = new ArrayList<>();
+        if (map.containsKey(target))
+            res.add(target);
+        return res;
+    }
+
+    private void findAllCombinations(int[] candidates, int target, List<List<Integer>> res, List<Integer> currentPath, int start) {
+        for (int i = start; i < candidates.length && candidates[i] <= target; i++) {
+            int c = candidates[i];
+            if (c < target) {
+                currentPath.add(c);
+                findAllCombinations(candidates, target-c, res, currentPath, i);
+                currentPath.remove(new Integer(c));
+            } else if (c == target) {
+                currentPath.add(c);
+                res.add(new ArrayList<>(currentPath));
+                currentPath.remove(new Integer(c));
+            }
+        }
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        Arrays.sort(candidates);
+        findAllCombinations(candidates, target, res, path, 0);
+        return res;
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.searchInsert(new int[]{1,3,5,6}, 5));
-        System.out.println(ia.searchInsert(new int[]{1,3}, 2));
-        System.out.println(ia.searchInsert(new int[]{1,3,5,6}, 7));
-        System.out.println(ia.searchInsert(new int[]{1,3,5,6}, 0));
+        System.out.println(ia.combinationSum(new int[]{2,3,6,7}, 7));
     }
 }

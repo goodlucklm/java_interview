@@ -335,8 +335,42 @@ public class IntegerArray {
         return i+1;
     }
 
+    public int trap(int[] height) {
+        int waterAmount = 0, n = height.length, leftBar = 0, rightBar = 0, left = 0, right = n-1;
+        if (n == 0)
+            return 0;
+        while (left >= 0 && left < n-1) {
+            if (height[left] <= height[left+1])
+                left++;
+            else
+                break;
+        }
+        leftBar = height[left];
+        while (right > 0 && right < n) {
+            if (height[right] <= height[right-1])
+                right--;
+            else
+                break;
+        }
+        rightBar = height[right];
+        while (left < right) {
+            if (leftBar < rightBar) {
+                while (left < right && height[++left] <= leftBar)
+                    waterAmount += leftBar-height[left];
+                if (height[left] >= leftBar)
+                    leftBar = height[left];
+            } else {
+                while (left < right && height[--right] <= rightBar)
+                    waterAmount += rightBar-height[right];
+                if (height[right] >= rightBar)
+                    rightBar = height[right];
+            }
+        }
+        return waterAmount;
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.firstMissingPositive(new int[]{3,4,-1,1}));
+        System.out.println(ia.trap(new int[]{2,0,2}));
     }
 }

@@ -292,8 +292,53 @@ public class StringQuestions {
         return res;
     }
 
+    public String multiply(String num1, String num2) {
+        StringBuilder res = new StringBuilder("0");
+        int carrier = 0, product = 0, digit = 0, level = 0, shift = 0, position, current, sum, n;
+        char n1, n2;
+        if (null == num1 || null == num2 || "0".equals(num1) || "0".equals(num2))
+            return res.toString();
+        for (int i = num1.length()-1; i >=0; i--) {
+            n1 = num1.charAt(i);
+            for (int j = num2.length()-1; j >=0; j--) {
+                n2 = num2.charAt(j);
+                product = (n1-'0')*(n2-'0');
+                carrier = product/10;
+                digit = product%10;
+                n = res.length();
+                position = n-1 - (level+shift);
+                while (position < 0) {
+                    res.insert(0, '0');
+                    position++;
+                }
+                current = res.charAt(position);
+                sum = (current-'0')+digit;
+                digit = sum%10;
+                carrier += sum/10;
+                res.setCharAt(position, Character.forDigit(digit, 10));
+                while (carrier > 0) {
+                    position--;
+                    if (position >= 0) {
+                        current = res.charAt(position);
+                        sum = current - '0' + carrier;
+                        digit = sum % 10;
+                        carrier = sum / 10;
+                        res.setCharAt(position, Character.forDigit(digit, 10));
+                    } else {
+                        res = res.insert(0, Character.forDigit(carrier,10));
+                        carrier = 0;
+                    }
+                }
+                shift++;
+            }
+            level++;
+            shift = 0;
+        }
+        return res.toString();
+    }
+
     public static void main(String[] args) {
         StringQuestions strq = new StringQuestions();
-        System.out.println("Hey, you got this: "+strq.countAndSay(6));
+        System.out.println("Hey, you got this: "+strq.multiply("11", null));
     }
 }

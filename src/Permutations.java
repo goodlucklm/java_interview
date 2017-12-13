@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Permutations {
     public void nextPermutation(int[] nums) {
         int n = nums.length, tmp, i, j, count = 0;
@@ -33,8 +37,26 @@ public class Permutations {
         }
     }
 
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        int n = nums.length;
+        int numOfPermutation = 1;
+        for (int i = n; i > 0; i--) {
+            numOfPermutation *= i;
+        }
+
+        for (int i = 0; i < numOfPermutation; i++) {
+            nextPermutation(nums);
+            List<Integer> current = new ArrayList<>();
+            for (int j : nums)
+                current.add(j);
+            res.add(current);
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Permutations pmts = new Permutations();
-        pmts.nextPermutation(new int[]{1,2});
+        pmts.permute(new int[]{1,2,3});
     }
 }

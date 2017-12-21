@@ -369,8 +369,32 @@ public class IntegerArray {
         return waterAmount;
     }
 
+    public void rotate(int[][] matrix) {
+        if (null == matrix)
+            return;
+        int n = matrix.length;
+        int tmp;
+        for (int i = 0; i <= n/2; i++) {
+            for (int j = i; j < n-i-1; j++) {
+                tmp = matrix[j][n-i-1];
+                matrix[j][n-i-1] = matrix[i][j];
+                matrix[i][j] = tmp;
+
+                tmp = matrix[n-i-1][n-1-j];
+                matrix[n-i-1][n-1-j] = matrix[i][j];
+                matrix[i][j] = tmp;
+
+                tmp = matrix[n-1-j][i];
+                matrix[n-1-j][i] = matrix[i][j];
+                matrix[i][j] = tmp;
+            }
+        }
+    }
+
     public static void main(String[] args) {
         IntegerArray ia = new IntegerArray();
-        System.out.println(ia.trap(new int[]{2,0,2}));
+        int[][] t = {{5, 1, 9,11},{2, 4, 8,10},{13, 3, 6, 7},{15,14,12,16}};
+        ia.rotate(t);
+        System.out.println(t);
     }
 }

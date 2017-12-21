@@ -54,8 +54,23 @@ public class IntegerQuestions {
 
     }
 
+    public double myPow(double x, int n) {
+        if (n == 0)
+            return 1.0;
+        if (n < 0) {
+            if (n == Integer.MIN_VALUE) {
+                n = -(n/2);
+                x = 1/(x*x);
+            } else {
+                n = -n;
+                x = 1 / x;
+            }
+        }
+        return (n%2 == 0) ? myPow(x*x, n/2) : x*myPow(x*x, n/2);
+    }
+
     public static void main(String[] args) {
         IntegerQuestions iq = new IntegerQuestions();
-        System.out.println(iq.divide(1100540749,      -1090366779));
+        System.out.println(iq.myPow(2.0,-2147483648));
     }
 }

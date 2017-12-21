@@ -337,8 +337,32 @@ public class StringQuestions {
         return res.toString();
     }
 
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> res = new ArrayList<>();
+        if (null == strs)
+            return res;
+        int n = strs.length;
+        char[] chs;
+        String sorted;
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (String s : strs) {
+            chs = s.toCharArray();
+            Arrays.sort(chs);
+            sorted = new String(chs);
+            if (map.containsKey(sorted))
+                map.get(sorted).add(s);
+            else {
+                List<String> curr = new ArrayList<>();
+                curr.add(s);
+                res.add(curr);
+                map.put(sorted, curr);
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         StringQuestions strq = new StringQuestions();
-        System.out.println("Hey, you got this: "+strq.multiply("11", null));
+        System.out.println("Hey, you got this: "+strq.groupAnagrams(new String[] {"eat", "tea", "tan", "ate", "nat", "bat"}));
     }
 }
